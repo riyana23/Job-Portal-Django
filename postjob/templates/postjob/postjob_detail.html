@@ -1,0 +1,47 @@
+{% extends 'postjob/postjob_base.html' %}
+
+{% block content %}
+  <div class="container">
+    <br/><br/><br/>
+    <table class="table table-dark">
+      <tr>
+        <td>Job title</td>
+        <td>{{postjob.title}}</td>
+      </tr>
+      <tr>
+        <td>Company Name</td>
+        <td>{{postjob.company_name}}</td>
+      </tr>
+      <tr>
+        <td>Job Description</td>
+        <td>{{postjob.description}}</td>
+      </tr>
+      <tr>
+        <td>Experience</td>
+        <td>{{postjob.experience}}</td>
+      </tr>
+      <tr>
+        <td>Keyskills</td>
+        <td>{{postjob.keyskills}}</td>
+      </tr>
+      <tr>
+        <td>Location</td>
+        <td>{{postjob.location}}</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="container">
+      {% if user.role == "employer" %}
+          {% if postjob.status != True %}
+            <a class='btn btn-primary' href="{% url 'postjob:jobapplications' pk=postjob.pk %}">Display Applications</a>
+          {% else %}
+            <a class='btn btn-primary' href="{% url 'postjob:update' pk=postjob.pk %}">Edit</a>
+          {% endif %}
+      {% elif user.role == "employee" %}
+        <a class='btn btn-primary' href="{% url 'postjob:applyjob' pk=postjob.pk %}">Apply</a>
+      {% endif %}
+      <a class='btn btn-primary' href="{% url 'postjob:list'%}">Cancel</a>
+    </div>
+
+{% endblock %}

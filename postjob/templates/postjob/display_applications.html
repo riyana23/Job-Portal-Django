@@ -1,0 +1,41 @@
+{% extends 'postjob/postjob_base.html' %}
+
+{% block content %}
+    <div class="container">
+        {% if user.role == "employer" %}
+          {% if applicant_list %}
+          <br/><br/><br/>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col"> Applicant Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Keyskills</th>
+                <th scope="col">Location</th>
+                <th scope="col">Match Percent</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for application in applicant_list %}
+              <tr>
+                <td>{{ application.name}}</td>
+                <td><a href="mailto:{{ application.applicant.user }}">{{ application.applicant.user }}</a></td>
+                <td>{{ application.applicant.experience }}</td>
+                <td>{{ application.applicant.keyskills }}</td>
+                <td>{{ application.applicant.location }}</td>
+                <td>{{ application.rank }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+
+          {% else %}
+              <h2 align="center">No Applications Received yet!!</h2>
+          {% endif %}
+        </table>
+        <div align="center"> <a class='btn btn-primary' href="{% url 'postjob:list'%}">Cancel</a> </div>
+      {% endif %}
+
+    </div>
+
+{% endblock %}

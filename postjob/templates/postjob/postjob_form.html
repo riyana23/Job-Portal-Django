@@ -1,0 +1,23 @@
+{% extends 'postjob/postjob_base.html' %}
+
+{% load bootstrap3 %}
+{% block content %}
+ <div class="container">
+    <br/>
+    <h1>
+      {% if not form.instance.pk %}
+      Post Job
+      {% else %}
+      Update Job
+      {% endif %}
+    </h1>
+     <br/>
+    <form method="POST">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <input type="submit" class= 'btn btn-primary btn-large' value="POST JOB">
+      <a class='btn btn-primary' href="{% url 'postjob:list'%}">Cancel</a>
+    </form>
+ </div>
+
+{% endblock %}

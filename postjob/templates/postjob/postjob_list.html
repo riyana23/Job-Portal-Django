@@ -1,0 +1,79 @@
+{% extends 'postjob/postjob_base.html' %}
+
+{% block content %}
+
+<h1 align='center'>Welcome to Job App!!!!!</h1>
+<h2 align='right'>{{user.first_name}} </h2>
+
+<div class="container">
+    <div>
+        <h1 align="center"> List of Posted Jobs </h1>
+          <table class="table table-dark table-bordered">
+            {% if postjob_list%}
+            <thead>
+              <tr>
+                <th scope="col">Job Title</th>
+                <th scope="col">Job Description</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Keyskills</th>
+                <th scope="col">Created</th>
+                <th colspan=2 scope="col">Job Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for job in postjob_list %}
+              {% if job.status%}
+              <tr>
+                <td><a href="{% url 'postjob:detail' pk=job.pk%}"> {{job.title}}</a></td>
+                <td>{{ job.description }}</td>
+                <td>{{ job.experience }}</td>
+                <td>{{ job.keyskills }}</td>
+                <td>{{ job.created_at }}</td>
+                {% if user.role == 'employer' %}
+                  <td><a class='btn btn-primary' href="{% url 'postjob:update' pk=job.pk %}">Edit</a></td>
+                  <td><a class='btn btn-primary' href="{% url 'postjob:deactivate' pk=job.pk %}">Remove</a></td>
+                {% elif user.role == 'employee' %}
+                  <td><a class='btn btn-primary' href="{% url 'postjob:applyjob' pk=job.pk %}">Apply </a></td>
+                {% endif %}
+              </tr>
+              {% endif %}
+            </tbody>
+            {% endfor %}
+            {% else %}
+              <h1 align='center'>No Jobs Posted yet!</h1>
+            {% endif %}
+        </table>
+  </div>
+
+
+{% if user.role == 'employer' %}
+      <br/><br/><br/>
+      <div class="conatiner">
+      <table class="table table-dark table-bordered">
+        <h1 align="center">Inactive Jobs</h1>
+        <thead>
+          <tr>
+            <th scope="col">Job Title</th>
+            <th scope="col">Job Description</th>
+            <th scope="col">Experience</th>
+            <th scope="col">Keyskills</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for job in postjob_list %}
+          {% if job.status != True%}
+            <tr>
+              <td><a href="{% url 'postjob:detail' pk=job.pk%}"> {{job.title}}</a></td>
+              <td>{{ job.description }}</td>
+              <td>{{ job.experience }}</td>
+              <td>{{ job.keyskills }}</td>
+            </tr>
+          {% endif%}
+        </tbody>
+        {% endfor %}
+        </table>
+
+      </div>
+  </div>
+{% endif %}
+{% endblock %}
